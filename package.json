@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.2",
+    "ejs": "^3.1.6",
+    "express": "^4.17.2",
+    "express-session": "^1.17.2",
+    "install": "^0.13.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.16.1",
+    "socket.io": "^4.4.1"
+  },
+  "name": "loqui",
+  "version": "1.0.0",
+  "description": "site de conversa",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "chat"
+  ],
+  "author": "Gabriel Rodrigo, Antonio e Thiago Patzdorf",
+  "license": "ISC"
+}

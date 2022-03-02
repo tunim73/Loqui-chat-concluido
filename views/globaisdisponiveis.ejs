@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" href="../imagens figma/loqui icon.png">
+    <link href='https://fonts.googleapis.com/css?family=Droid Sans' rel='stylesheet'>
+
+    <title>Welcome, <%=username%>
+    </title>
+</head>
+
+<body style="background-color: #9D9DB7;">
+
+    <div class="main-page-header">
+        <a href="/room"><img class="logo-loqui-main-page" src="../imagens figma/loqui icon.png"></a>
+        <img class="logo-loqui-main-page" onclick="config()" id="config" src="../img/definicoes (1).png">
+    </div>
+
+    <div class="options hidden">
+        <a href="/logout" class="option">Logout</a>
+        <a href="#" class="option" onclick="manutencao()">Configurações</a>
+        <a href="#" class="option" id="showmodal">Equipe</a>
+        <a href="#" class="option" id="showmodal1">Aviso</a>
+        <a href="https://www.vakinha.com.br/vaquinha/contribua-com-o-loqui" target="_blank"
+            class="option">Contribua!</a>
+    </div>
+
+    <div class="content">
+        <!--SELEÇÃO DE SALAS DA PESSOA -->
+        <div class="container-total">
+
+            <div class="container-left">
+                <h1 class="title">Chats Globais</h1>
+                <div class="lista-de-conversas">
+                    <% room0.forEach(function(name){ %>
+                        
+                        <form class="contact" action="/selectedroom" method="POST">
+                            <button type="submit" value="<%=name.roomname%>" name="select_room">
+                                <%=name.roomname%>
+                            </button>
+                            <input type="hidden" value="<%=username%>" name="username">
+                        </form>
+                    
+                        <% }); %>
+                </div>
+            </div>
+            
+
+        </div>
+    </div>
+    </div>
+    <div class="modal hidden" onclick="fechar()">
+        <div class="modal-container">
+            <h1 class="modal-title" style="text-align:center;">Projeto desenvolvido por:</h1>
+            <ul>
+                <li class="modal-names">Anna Rodrigues</li>
+                <li class="modal-names">Antonio Netto</li>
+                <li class="modal-names">Bruna Leandro</li>
+                <li class="modal-names">Gabriel Rodrigo</li>
+                <li class="modal-names">Thiago Patzdorf</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="modal1 hidden" onclick="fechar()">
+        <div class="modal-container1">
+            <h1 class="modal-title1" style="text-align:center;">Aviso:</h1>
+            <p class="modal-names1">Nós da loqui não nos responsabilizamos por eventuais vazamentos de informações ou
+                golpes,
+                sugerimos que jamais compartilhe informações pessoais com pessoas desconhecidas, como senhas, números de
+                cartão
+                ou qualquer outro dado confidencial.<br>
+            <p style="text-align:center; font-weight: bold; color: #77777B; margin-top:0.5rem;">Aproveite!</p>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function config() {
+            let options = document.querySelector(".options");
+            options.classList.toggle("hidden");
+        }
+
+        let modal = document.querySelector(".modal");
+
+        function fechar() {
+            modal.classList.add("hidden");
+        }
+
+        let showModal = document.getElementById("showmodal");
+        showmodal.addEventListener("click", () => {
+            modal.classList.remove("hidden");
+        })
+
+        let modal1 = document.querySelector(".modal1");
+        let showModal1 = document.getElementById("showmodal1");
+        showModal1.addEventListener("click", () => {
+            modal1.classList.remove("hidden");
+        })
+
+        modal1.addEventListener("click", () => {
+            modal1.classList.add("hidden");
+        })
+
+        function manutencao() {
+            alert("Serviço em manutenção!")
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="icon" href="../imagens figma/loqui icon.png">
+  <link href='https://fonts.googleapis.com/css?family=Droid Sans' rel='stylesheet'>
+  <title>You're in <%=roomname%>
+  </title>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"
+    integrity="sha512-MgkNs0gNdrnOM7k+0L+wgiRc5aLgl74sJQKbIWegVIMvVGPc1+gc1L2oK9Wf/D9pq58eqIJAxOonYPVE5UwUFA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+</head>
+
+<body style="background-color: #9D9DB7;">
+
+  <div class="main-page-header">
+    <a href="/room"><img class="logo-loqui-main-page" src="../imagens figma/loqui icon.png"></a>
+    <img class="logo-loqui-main-page" onclick="config()" id="config" src="../img/definicoes (1).png">
+  </div>
+
+  <div class="options hidden">
+    <a href="/logout" class="option">Logout</a>
+    <a href="#" class="option" onclick="manutencao()">Configurações</a>
+    <a href="#" class="option" id="showmodal">Equipe</a>
+    <a href="#" class="option" id="showmodal1">Aviso</a>
+    <a href="https://www.vakinha.com.br/vaquinha/contribua-com-o-loqui" target="_blank" class="option">Contribua!</a>
+  </div>
+
+  <div class="content">
+
+    <div class="container-right">
+      <h1 class="title">
+        <%=roomname%>
+      </h1>
+      <div class="message-box" id="msg-box"></div>
+      <div class="bottom-chat">
+        <img src="../imagens figma/enviar.png" class="bottom-chat-icon" id="send" onclick="enviar()">
+        <input type="text" placeholder="Type a message..." id="msg">
+        <img src="../imagens figma/feliz.png" class="bottom-chat-icon" id="emoji" onclick="showEmojis()">
+
+      </div>
+      <div class="lista-emojis hidden" id="lista-emojis">
+        <span class="selected-emoji" onclick="putInMessage('😀')">😀</span>
+        <span class="selected-emoji" onclick="putInMessage('😃')">😃</span>
+        <span class="selected-emoji" onclick="putInMessage('😄')">😄</span>
+        <span class="selected-emoji" onclick="putInMessage('😁')">😁</span>
+        <span class="selected-emoji" onclick="putInMessage('😆')">😆</span>
+        <span class="selected-emoji" onclick="putInMessage('😅')">😅</span>
+        <span class="selected-emoji" onclick="putInMessage('😂')">😂</span>
+        <span class="selected-emoji" onclick="putInMessage('🤣')">🤣</span>
+        <span class="selected-emoji" onclick="putInMessage('😊')">😊</span>
+        <span class="selected-emoji" onclick="putInMessage('😇')">😇</span>
+        <span class="selected-emoji" onclick="putInMessage('🙂')">🙂</span>
+        <span class="selected-emoji" onclick="putInMessage('🙃')">🙃</span>
+        <span class="selected-emoji" onclick="putInMessage('😉')">😉</span>
+        <span class="selected-emoji" onclick="putInMessage('😌')">😌</span>
+        <span class="selected-emoji" onclick="putInMessage('😍')">😍</span>
+        <span class="selected-emoji" onclick="putInMessage('🥰')">🥰</span>
+        <span class="selected-emoji" onclick="putInMessage('😘')">😘</span>
+        <span class="selected-emoji" onclick="putInMessage('😗')">😗</span>
+        <span class="selected-emoji" onclick="putInMessage('😙')">😙</span>
+        <span class="selected-emoji" onclick="putInMessage('😚')">😚</span>
+        <span class="selected-emoji" onclick="putInMessage('😋')">😋</span>
+        <span class="selected-emoji" onclick="putInMessage('😛')">😛</span>
+        <span class="selected-emoji" onclick="putInMessage('😝')">😝</span>
+        <span class="selected-emoji" onclick="putInMessage('😜')">😜</span>
+        <span class="selected-emoji" onclick="putInMessage('🤪')">🤪</span>
+        <span class="selected-emoji" onclick="putInMessage('🤨')">🤨</span>
+        <span class="selected-emoji" onclick="putInMessage('😭')">😭</span>
+        <span class="selected-emoji" onclick="putInMessage('😳')">😳</span>
+        <span class="selected-emoji" onclick="putInMessage('🥺')">🥺</span>
+        <span class="selected-emoji" onclick="putInMessage('😢')">😢</span>
+        <span class="selected-emoji" onclick="putInMessage('🥶')">🥶</span>
+        <span class="selected-emoji" onclick="putInMessage('🥵')">🥵</span>
+        <span class="selected-emoji" onclick="putInMessage('😎')">😎</span>
+        <span class="selected-emoji" onclick="putInMessage('🤯')">🤯</span>
+        <span class="selected-emoji" onclick="putInMessage('😨')">😨</span>
+        <span class="selected-emoji" onclick="putInMessage('😱')">😱</span>
+        <span class="selected-emoji" onclick="putInMessage('😥')">😥</span>
+        <span class="selected-emoji" onclick="putInMessage('🤗')">🤗</span>
+        <span class="selected-emoji" onclick="putInMessage('🙄')">🙄</span>
+        <span class="selected-emoji" onclick="putInMessage('😏')">😏</span>
+        <span class="selected-emoji" onclick="putInMessage('🤡')">🤡</span>
+        <span class="selected-emoji" onclick="putInMessage('💩')">💩</span>
+        <span class="selected-emoji" onclick="putInMessage('👽')">👽</span>
+        <span class="selected-emoji" onclick="putInMessage('💀')">💀</span>
+        <span class="selected-emoji" onclick="putInMessage('🤑')">🤑</span>
+        <span class="selected-emoji" onclick="putInMessage('🤥')">🤥</span>
+        <span class="selected-emoji" onclick="putInMessage('🤢')">🤢</span>
+        <span class="selected-emoji" onclick="putInMessage('🤮')">🤮</span>
+
+      </div>
+    </div>
+
+    <!-- AQUI EMBAIXO ENTRA O JAVASCRIPT-->
+
+    <script>
+
+      const socket = io();
+
+      const roomname = "<%=roomname%>";
+      const username = "<%=username%>";
+      const number = "<%=number%>";
+
+      console.log("username:" + username)
+
+      socket.emit("selected_room", {
+        roomname,
+        username,
+        number
+
+      }, (responde) => {
+        responde.forEach(element => {
+          show(element)
+        });
+      });
+
+      function enviar() {
+
+        const msg = document.getElementById("msg").value;
+
+        if (msg === "") {
+          return;
+        }
+        else {
+
+          socket.emit("message", { roomname, username, msg });
+          document.getElementById("msg").value = "";
+        }
+
+      }
+
+      socket.on("showmessage", data => {
+        show(data)
+      })
+
+      function show(data) {
+
+        let p = document.createElement("p");
+        p.innerHTML = "<b>" + data.username + ": " + "</b>" + data.msg;
+        p.style.marginBottom = "0.5rem";
+
+        if (username == data.username) p.style.backgroundColor = "#F1F4F8";
+        else p.style.backgroundColor = "#ff8247";
+
+        p.style.padding = "0.5rem";
+        p.style.borderRadius = "0.3rem";
+        p.style.overflow = "auto";
+        let div = document.getElementById("msg-box");
+        div.appendChild(p);
+        div.scrollTop = div.scrollHeight;
+
+      }
+
+
+    </script>
+
+
+    <!-- <script src="/socket.io/socket.io.js"></script> -->
+
+
+
+    <div class="modal hidden" onclick="fechar()">
+      <div class="modal-container">
+        <h1 class="modal-title" style="text-align:center;">Projeto desenvolvido por:</h1>
+        <ul>
+          <li class="modal-names">Anna Rodrigues</li>
+          <li class="modal-names">Antonio Netto</li>
+          <li class="modal-names">Bruna Leandro</li>
+          <li class="modal-names">Gabriel Rodrigo</li>
+          <li class="modal-names">Thiago Patzdorf</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal1 hidden" onclick="fechar()">
+      <div class="modal-container1">
+        <h1 class="modal-title1" style="text-align:center;">Aviso:</h1>
+        <p class="modal-names1">Nós da loqui não nos responsabilizamos por eventuais vazamentos de informações ou
+          golpes, sugerimos que jamais compartilhe informações pessoais com pessoas desconhecidas, como senhas, números
+          de cartão ou qualquer outro dado confidencial.<br>
+        <p style="text-align:center; font-weight: bold; color: #77777B; margin-top:0.5rem;">Aproveite!</p>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script>
+    let emojiBtn = document.getElementById("emoji");
+    let listaEmojis = document.getElementById("lista-emojis");
+
+    //mostra lista de emojis
+    function showEmojis() {
+      listaEmojis.classList.toggle("hidden");
+    }
+    //coloca emoji no chat
+    function putInMessage(emoji) {
+      let msg = document.getElementById("msg");
+      msg.value += emoji;
+    }
+
+    function config() {
+      let options = document.querySelector(".options");
+      options.classList.toggle("hidden");
+    }
+
+    let modal = document.querySelector(".modal");
+    function fechar() {
+      modal.classList.add("hidden");
+    }
+
+    let showModal = document.getElementById("showmodal");
+    showmodal.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+    })
+
+    let modal1 = document.querySelector(".modal1");
+    let showModal1 = document.getElementById("showmodal1");
+    showModal1.addEventListener("click", () => {
+      modal1.classList.remove("hidden");
+    })
+
+    modal1.addEventListener("click", () => {
+      modal1.classList.add("hidden");
+    })
+
+    function manutencao() {
+      alert("Serviço em manutenção!")
+    }
+  </script>
+
+</body>
+
+
+
+</html>
