@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,18 +10,22 @@
     <link href='https://fonts.googleapis.com/css?family=Droid Sans' rel='stylesheet'>
     <title>Loqui - login</title>
 </head>
-<body style="background-color: #9D9DB7;"> 
-    
-    
+
+<body style="background-color: #9D9DB7;">
+
+
     <form class="form-register" method="POST" action="/authenticate">
-        
+
         <div class="logo-login">
             <img class="logo-loqui" src="../imagens figma/loqui icon.png">
         </div>
-        <input type="text" name="username" class="input-login" value ="" placeholder="Digite seu username" required>
+        <input type="text" name="username" class="input-login" value="" placeholder="Digite seu username" required>
         <input type="password" name="password" class="input-login" value="" placeholder="Digite sua senha" required>
-        <a href="/register"><p class="have-account">Não possui uma conta?</p></a>
-        <button class="btn-submit">Entrar</button>    
+        <a href="/register">
+            <p class="have-account">Não possui uma conta?</p>
+        </a>
+        <button class="btn-submit">Entrar</button>
     </form>
 </body>
+
 </html>

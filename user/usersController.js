@@ -13,13 +13,13 @@ const { render } = require("express/lib/response");
 
 //Login
 router.get("/", (req, res) => {
-    
-    if(req.session.user != undefined){
+
+    if (req.session.user != undefined) {
         res.redirect("/room");
-    }else{
+    } else {
         res.render("login");
     }
-    
+
 })
 
 
@@ -148,9 +148,9 @@ router.post("/createRoom", (req, res) => {
 
                     req.session.room = {
                         roomname,
-                        number:2,
+                        number: 2,
                         username
-                    } 
+                    }
                     res.redirect("/createdroom")
                 })
             }
@@ -184,7 +184,7 @@ router.post("/confirmacaoContato", middlewares, (req, res) => {
 
             req.session.room = {
                 roomname,
-                number:'4',
+                number: '4',
                 username,
             }
             rooms.create({
@@ -192,10 +192,10 @@ router.post("/confirmacaoContato", middlewares, (req, res) => {
                 limit: limit,
             })
             usersInRoom.create({
-                roomname:roomname,
-                username:username2,
-                socketId:"socket.id"
-            }).then(()=>{
+                roomname: roomname,
+                username: username2,
+                socketId: "socket.id"
+            }).then(() => {
                 console.log("ATRELACAO FEITA COM SUCESSO com usuario 2 ");
             })
             res.redirect("/createdroom")
@@ -228,21 +228,21 @@ router.post("/selectedroom", (req, res) => {
     
     `)
 
-    if(roomname == '-1'){
+    if (roomname == '-1') {
         res.redirect("/room");
-    }else{
+    } else {
 
 
         rooms.findOne({ where: { roomname: roomname } }).then(room => {
 
             if (room == undefined) {
                 res.send("Room não existe")
-    
+
             } else { // room exists
                 const verificaRooms = usersInRoom.findAll({ where: { roomname: roomname } });
-    
+
                 if (room.limit == "group" || room.limit == "global") {
-    
+
                     verificaRooms.then(inRoom => {
                         let local = false, i;
                         for (i = 0; i < inRoom.length; i++) {
@@ -250,51 +250,51 @@ router.post("/selectedroom", (req, res) => {
                                 local = true; break;
                             }
                         }
-    
+
                         if (local) {// CASE 01
                             number = 1;
                             /*usuário já esteve nessa room
                               atualize seu id e da um join para room*/
                             redirectMain(number);
-    
+
                         } else {//CASE 02
                             number = 2;
-    
+
                             /*usuário nunca esteve nessa room group
                                 então da join e anexe no userIroom*/
                             redirectMain(number);
                         }
                     });
-    
+
                     //PRIVADO
                 } else { //room.limit == private
-    
+
                     verificaRooms.then(inRoom => {
-    
+
                         let local0 = false, i;
-    
+
                         for (i = 0; i < inRoom.length; i++) {
                             if (inRoom[i].username == username) {
                                 local0 = true; break;
                             }
                         }
-    
+
                         if (local0) { //CASE 03
                             /*usuário esteve nessa private room 
                          atualize seu id e da um join para room*/
                             number = 3;
                             redirectMain(number);
-    
+
                         } else {
                             /*nunca esteve nessa room antes, verificar quantas pessoas tem nesta 
                               room privada, caso tenha menos de duas pessoas, usuário pode entrar */
-    
+
                             if (inRoom.length >= 2) {
-    
+
                                 //não pode entrar, chat privado
                                 res.render("thataprivateroom")
-    
-    
+
+
                             } else { //CASE 04
                                 number = 4;
                                 /*usuário nunca esteve nessa room private, mas ele pode entrar
@@ -306,9 +306,9 @@ router.post("/selectedroom", (req, res) => {
                 }
             }
         })
-    
+
         function redirectMain(number) {
-    
+
             req.session.room = {
                 roomname: roomname,
                 number: number,
@@ -319,16 +319,16 @@ router.post("/selectedroom", (req, res) => {
                 Username: ${username} | Roomname: ${roomname} | Number: ${number}
                 --------------------------------------------------------------------------------`
             );
-    
-    
-    
-    
+
+
+
+
             res.redirect("/main");
         }
 
     }
 
-    
+
 
 })
 
@@ -383,18 +383,18 @@ router.get("/main", middlewares, (req, res) => {
 
 })
 
-router.get("/global",middlewares, (req,res)=>{
+router.get("/global", middlewares, (req, res) => {
     let username = req.session.user.username
-    const roomsGlobais = rooms.findAll({where:{limit:"global"}})
-    roomsGlobais.then(roomsglobal =>{
+    const roomsGlobais = rooms.findAll({ where: { limit: "global" } })
+    roomsGlobais.then(roomsglobal => {
 
-        res.render("globaisdisponiveis",{
+        res.render("globaisdisponiveis", {
             username,
             room0: roomsglobal
         })
 
     })
-    
+
 
 })
 
