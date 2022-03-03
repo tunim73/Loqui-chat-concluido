@@ -23,28 +23,35 @@ router.get("/", (req, res) => {
 })
 
 
-
 router.post("/authenticate", (req, res) => {
 
     const password = req.body.password;
     const username = req.body.username;
 
-    users.findOne({ where: { username: username } }).then(user => {
+    users.findAll().then(us => {
+        let i;
+        for (i = 0; i < us.length; i++) {
+            if (us[i].username == username) {
+                break;
+            }
+        }
 
-        if (user != undefined) {
+        if (us[i] != undefined) {
+
             //password validate
-            let correct = bcrypt.compareSync(password, user.password);
+            let correct = bcrypt.compareSync(password, us[i].password);
 
             if (correct) {
                 req.session.user = {
-                    userid: user.id,
-                    username: user.username,
+                    userid: us[i].id,
+                    username: us[i].username,
                 }
                 res.redirect("/room");
 
             } else { res.redirect("/"); }
         } else { res.redirect("/"); }
     })
+
 })
 
 //Register
@@ -160,13 +167,11 @@ router.post("/createRoom", (req, res) => {
 
 });
 
-
 router.get("/createPrivate", middlewares, (req, res) => {
 
     res.render("roomPrivate");
 
 })
-
 
 router.post("/confirmacaoContato", middlewares, (req, res) => {
 
@@ -176,9 +181,25 @@ router.post("/confirmacaoContato", middlewares, (req, res) => {
     const username2 = req.body.username2;
 
 
-    users.findOne({ where: { username: username2 } }).then(user => {
+    console.log(`
+    ----------------------------------------------------------------------
+    username ${username} | roomname ${roomname} | username2 ${username2}
+    ----------------------------------------------------------------------
+    `)
 
-        if (user == undefined) {
+
+    users.findAll({ where: { username: username2 } }).then(user => {
+        let i;
+
+        for (i = 0; i < user.length; i++) {
+            if (user[i].username == username2)
+                break;
+        }
+
+
+
+
+        if (user[i] == undefined) {
             res.send("Não existe esse usuário no Banco de dados, verifique se não houve erro de digitacao");
         } else {
 
@@ -202,18 +223,12 @@ router.post("/confirmacaoContato", middlewares, (req, res) => {
         }
     })
 
-
-
 })
-
-
 
 router.get("/createdroom", (req, res) => {
     res.render("roomCreated");
 
 })
-
-
 
 router.post("/selectedroom", (req, res) => {
 
@@ -332,7 +347,6 @@ router.post("/selectedroom", (req, res) => {
 
 })
 
-
 router.get("/room", middlewares, (req, res) => {
 
     let username = req.session.user.username;
@@ -341,9 +355,7 @@ router.get("/room", middlewares, (req, res) => {
     room.then(room0 => {
 
         const sala = rooms.findAll();
-
         sala.then(room1 => {
-
             res.render("room", {
 
                 username: username,
@@ -361,7 +373,6 @@ router.get("/room", middlewares, (req, res) => {
 
 
 })
-
 
 router.get("/main", middlewares, (req, res) => {
 
