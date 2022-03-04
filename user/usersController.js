@@ -8,7 +8,6 @@ const usersInRoom = require("../database/usersInRoom");
 const middlewares = require("../middlewares/auth");
 const session = require("express-session");
 const usersInRooms = require("../database/usersInRoom");
-const { render } = require("express/lib/response");
 
 
 //Login
@@ -59,7 +58,6 @@ router.post("/authenticate", (req, res) => {
 router.get("/register", (req, res) => {
     res.render("register");
 })
-
 
 router.post("/register", (req, res) => {
 
@@ -180,14 +178,6 @@ router.post("/confirmacaoContato", middlewares, (req, res) => {
     let limit = req.session.room.limit;
     const username2 = req.body.username2;
 
-
-    console.log(`
-    ----------------------------------------------------------------------
-    username ${username} | roomname ${roomname} | username2 ${username2}
-    ----------------------------------------------------------------------
-    `)
-
-
     users.findAll({ where: { username: username2 } }).then(user => {
         let i;
 
@@ -196,11 +186,8 @@ router.post("/confirmacaoContato", middlewares, (req, res) => {
                 break;
         }
 
-
-
-
         if (user[i] == undefined) {
-            res.send("Não existe esse usuário no Banco de dados, verifique se não houve erro de digitacao");
+            res.render("usuarionaoexiste")
         } else {
 
             req.session.room = {
@@ -251,7 +238,7 @@ router.post("/selectedroom", (req, res) => {
         rooms.findOne({ where: { roomname: roomname } }).then(room => {
 
             if (room == undefined) {
-                res.send("Room não existe")
+                res.render("NotRoom")
 
             } else { // room exists
                 const verificaRooms = usersInRoom.findAll({ where: { roomname: roomname } });
@@ -329,19 +316,14 @@ router.post("/selectedroom", (req, res) => {
                 number: number,
                 username: username
             }
-            console.log(`
-                --------------------------------------------------------------------------------
-                Username: ${username} | Roomname: ${roomname} | Number: ${number}
-                --------------------------------------------------------------------------------`
-            );
-
-
 
 
             res.redirect("/main");
         }
 
     }
+
+
 
 
 
@@ -408,6 +390,7 @@ router.get("/global", middlewares, (req, res) => {
 
 
 })
+
 
 
 

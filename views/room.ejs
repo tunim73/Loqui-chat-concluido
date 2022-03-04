@@ -74,27 +74,6 @@
           <button type="submit" class="create-room">Entre no grupo</button>
 
         </form>
-
-
-
-        <!--C O M E N T E I  A Q U I  P A R A  T E S T A R, P O D E  D E S C O M E N T A R  E  A L T E R A R -->
-        <!-- Selecione rooms de grupos-->
-       <!--<form class="selected-room" action="/selectedroom" method="POST">
-          <input type="hidden" value="<%=username%>" name="username">
-          <<p class="subtitle"> Selecione uma sala </p>
-          <select name="select_room">
-            <option value="-1">Selecione uma sala</option>
-            <% room1.forEach(function(name){ %>
-              <option value="<%=name.roomname%>">
-                <%=name.roomname%>
-              </option>
-              <% }); %>
-          </select>
-
-          <button type="submit" class="selectedRoom">Entrar</button>
-
-        </form> --> 
-        <!-- Selecione rooms globais-->
         <br>
         <form action="/global" class="form-global-chats" method="get">
           <button type="submit" class="create-room" value="Global">Chats globais</button>
