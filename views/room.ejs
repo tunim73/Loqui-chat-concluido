@@ -65,7 +65,17 @@
             <option value="global">Global</option>
           </select>
           <button type="submit" class="create-room">Criar sala</button>
+          <hr>
         </form>
+
+        <form class = "create-room create" method="POST" action="/selectedroom" >
+          <input type="text" class="room-name" placeholder="Nome do grupo" name="select_room" required>
+          <input type="hidden" value="<%=username%>" name="username">
+          <button type="submit" class="create-room">Entre no grupo</button>
+
+        </form>
+
+
 
         <!--C O M E N T E I  A Q U I  P A R A  T E S T A R, P O D E  D E S C O M E N T A R  E  A L T E R A R -->
         <!-- Selecione rooms de grupos-->
