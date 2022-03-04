@@ -36,14 +36,14 @@
         <h1 class="title">Chats</h1>
         <div class="lista-de-conversas">
           <% room0.forEach(function(name){ %>
-            <p class="contact">
-            <form class="contact" action="/selectedroom" method="POST">
-              <button type="submit" value="<%=name.roomname%>" name="select_room">
-                <%=name.roomname%>
+            
+            <form class="form-contact" action="/selectedroom" method="POST">
+              <button type="submit" class="contact" value="<%=name.roomname%>" name="select_room">
+               <%=name.roomname%>
               </button>
               <input type="hidden" value="<%=username%>" name="username">
             </form>
-            </p>
+            
             <% }); %>
         </div>
       </div>
@@ -60,17 +60,18 @@
           <input type="hidden" value="<%=username%>" name="username">
           <select name="limit" required>
             <option value="-1">Selecione o tipo de sala</option>
-            <option value="private">privado</option>
-            <option value="group">grupo</option>
+            <option value="private">Privado</option>
+            <option value="group">Grupo</option>
             <option value="global">Global</option>
           </select>
           <button type="submit" class="create-room">Criar sala</button>
         </form>
 
+        <!--C O M E N T E I  A Q U I  P A R A  T E S T A R, P O D E  D E S C O M E N T A R  E  A L T E R A R -->
         <!-- Selecione rooms de grupos-->
-        <form class="selected-room" action="/selectedroom" method="POST">
+       <!--<form class="selected-room" action="/selectedroom" method="POST">
           <input type="hidden" value="<%=username%>" name="username">
-          <p class="subtitle"> Selecione uma sala </p>
+          <<p class="subtitle"> Selecione uma sala </p>
           <select name="select_room">
             <option value="-1">Selecione uma sala</option>
             <% room1.forEach(function(name){ %>
@@ -82,9 +83,10 @@
 
           <button type="submit" class="selectedRoom">Entrar</button>
 
-        </form>
+        </form> --> 
         <!-- Selecione rooms globais-->
-        <form action="/global" method="get">
+        <br>
+        <form action="/global" class="form-global-chats" method="get">
           <button type="submit" class="create-room" value="Global">Chats globais</button>
         </form>
       </div>

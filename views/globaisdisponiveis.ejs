@@ -38,7 +38,7 @@
                 <div class="lista-de-conversas">
                     <% room0.forEach(function(name){ %>
 
-                        <form class="contact" action="/selectedroom" method="POST">
+                        <form class="form-contact" action="/selectedroom" method="POST">
                             <button type="submit" value="<%=name.roomname%>" name="select_room">
                                 <%=name.roomname%>
                             </button>
