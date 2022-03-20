@@ -4,22 +4,12 @@ const rooms = require("../database/rooms");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const usersInRoom = require("../database/usersInRoom");
-//const auth = require("../middlewares/auth");
 const middlewares = require("../middlewares/auth");
 const session = require("express-session");
 const usersInRooms = require("../database/usersInRoom");
 
 
-//Login
-router.get("/", (req, res) => {
 
-    if (req.session.user != undefined) {
-        res.redirect("/room");
-    } else {
-        res.render("login");
-    }
-
-})
 
 
 router.post("/authenticate", (req, res) => {
@@ -54,10 +44,6 @@ router.post("/authenticate", (req, res) => {
 })
 
 //Register
-
-router.get("/register", (req, res) => {
-    res.render("register");
-})
 
 router.post("/register", (req, res) => {
 
@@ -105,15 +91,6 @@ router.post("/register", (req, res) => {
     });
 
 });
-
-//logout
-
-router.get("/logout", (req, res) => {
-    req.session.user = undefined;
-    res.redirect("/");
-});
-
-//room 
 
 router.post("/createRoom", (req, res) => {
 
@@ -165,12 +142,6 @@ router.post("/createRoom", (req, res) => {
 
 });
 
-router.get("/createPrivate", middlewares, (req, res) => {
-
-    res.render("roomPrivate");
-
-})
-
 router.post("/confirmacaoContato", middlewares, (req, res) => {
 
     let username = req.session.room.username;
@@ -212,23 +183,12 @@ router.post("/confirmacaoContato", middlewares, (req, res) => {
 
 })
 
-router.get("/createdroom", (req, res) => {
-    res.render("roomCreated");
-
-})
-
 router.post("/selectedroom", (req, res) => {
 
     const username = req.body.username;
     const roomname = req.body.select_room;
-
     let number;
-    console.log(` 
-    ----------------------------------------------------------------------------
-    ROOM ${roomname}
-    ----------------------------------------------------------------------------
     
-    `)
 
     if (roomname == '-1') {
         res.redirect("/room");
@@ -329,6 +289,40 @@ router.post("/selectedroom", (req, res) => {
 
 })
 
+
+
+
+//Login
+router.get("/", (req, res) => {
+
+    if (req.session.user != undefined) {
+        res.redirect("/room");
+    } else {
+        res.render("login");
+    }
+
+})
+//Logout
+router.get("/logout", (req, res) => {
+    req.session.user = undefined;
+    res.redirect("/");
+});
+
+router.get("/register", (req, res) => {
+    res.render("register");
+})
+
+
+router.get("/createPrivate", middlewares, (req, res) => {
+
+    res.render("roomPrivate");
+
+})
+
+router.get("/createdroom", (req, res) => {
+    res.render("roomCreated");
+})
+
 router.get("/room", middlewares, (req, res) => {
 
     let username = req.session.user.username;
@@ -361,12 +355,6 @@ router.get("/main", middlewares, (req, res) => {
     let roomname = req.session.room.roomname;
     let number = req.session.room.number;
     let username = req.session.room.username;
-
-    console.log(`
-            --------------------------------------------------------------------------------
-            Username: ${username} | Roomname: ${roomname} | Number: ${number}
-            --------------------------------------------------------------------------------`
-    );
 
     res.render("main", {
         username: username,

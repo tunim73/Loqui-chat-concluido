@@ -2,11 +2,8 @@
 
 const { http, io, app, express } = require("./https")
 const bodyParser = require("body-parser");
-const users = require("./database/users");
-const usersController = require("./user/usersController");
+const rotas = require("./rotas/Rotas");
 const session = require("express-session");
-const middlewares = require("./middlewares/auth");
-const rooms = require("./database/rooms");
 const usersInRoom = require("./database/usersInRoom");
 const messages = require("./database/messages");
 
@@ -28,22 +25,8 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 //routes 
-app.use("/", usersController);
-
-
-//Principal socket 
-/*
-app.get("/main", middlewares,(req,res)=>{
-    users.findOne({where:{username:req.session.user.user}}).then(user=>{
-        let username = user.username;
-        res.render("main", {username:username});
-        console.log(username+" se conectou!");
-    })
-})
-*/
-
+app.use("/", rotas);
 
 
 io.on("connection", (socket) => {
@@ -191,50 +174,6 @@ io.on("connection", (socket) => {
 
 
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 http.listen(3000, () => {
     console.log("Servidor aberto na porta 3000");
