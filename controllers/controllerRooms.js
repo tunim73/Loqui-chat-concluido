@@ -11,89 +11,48 @@ module.exports = {
 
         const room = await controllerBD.seachRoomName(roomname);
 
-        if (room == undefined) 
+        if (room == undefined) //room não localizada
         {
             return undefined;
-            //res.render("NotRoom");
-
         } 
         
         else 
-        { // room exists
+        { // room localizada
 
             const inRoom = await controllerBD.searchUsersInRoom(roomname, username);
             
-
-            if (room.limit == "group" || room.limit == "global") 
-            {
-
-                if (inRoom != undefined) 
-                {// CASE 01
-                    
-                    number = 1;
-                    /*usuário já esteve nessa room
-                      atualize seu id e da um join para room*/
-
-                } 
+            if(inRoom != undefined) 
+            { //Usuário já esteve nessa room antes
+                data = ({
+                    roomname: room.roomname,
+                    username,
+                });
+                             
+                return data;
                 
-                else 
-                {//CASE 02
-                    number = 2;
-
-                    /*usuário nunca esteve nessa room group
-                        então da join e anexe no userIroom*/
-                }
-
-
-
-            } 
-            else 
-            { //room.limit == private
-
-
-                if (inRoom != undefined) 
-                { //CASE 03
-                    /*usuário esteve nessa private room 
-                    atualize seu id e da um join para room*/
-                    number = 3;
-
-                } 
-
-                else 
-                {
-                    /*nunca esteve nessa room antes, verificar quantas pessoas tem nesta 
-                      room privada, caso tenha menos de duas pessoas, usuário pode entrar */
-
-                    if (inRoom.length >= 2) 
-                    {
-                        number=5;
-                    } 
-                    else 
-                    { //CASE 04
-                        number = 4;
-                        /*usuário nunca esteve nessa room private, mas ele pode entrar
-                        então da join e anexe no userIroom*/
-                    }
-                }
-
             }
-
-            data = ({
-                roomname: room.roomname,
-                username,
-                number
-            });
-                         
-            return data;
+            else if(room.limit == "private" && inRoom.length >=2) 
+            { //impede o usuário de entrar numa sala privada 
+                return false;
+            }
+            else 
+            {   //usuario nunca entrou nessa room, pode entrar, pois é do tipo grupo ou global
+                //atrele usuário a sala e retorne
+                await this.auxUsersInRoom(roomname,username); 
+                data = ({
+                    roomname: room.roomname,
+                    username,
+                });
+                
+                             
+                return data;
+            }
            
         }
-
-
-
-
+        
     },
 
-    async auxCreateRoom(roomname,limit){
+    async auxCreateRoom(roomname, limit, username){
 
         const room = await controllerBD.seachRoomName(roomname);
 
@@ -104,44 +63,48 @@ module.exports = {
         else if(limit=="private")
         {
             return limit; //TALVEZ AQUI EU POSSA FAZER ALGUMA COISA LOGO, 
-            //MELHOR DO QUE A FORMA ATUAL DE SOLICITAR O NOME DO INDIVIDUO
+            //MELHOR DO QUE A FORMA ATUAL DE SOLICITAR O NOME DO INDIVIDUO por uma tela e tals
         }
         else 
         {
             rooms.create({
                 roomname,
                 limit,
-            }).then(()=>{
+            }).then(async ()=>{
+                await this.auxUsersInRoom(roomname, username);
                 return true;
             }).catch(()=>{
                 return "200"
             });   
+
+
         }
     },
 
-    async auxConfirmacaoContato(roomname, limit, convidadoPrivado){
+    async auxConfirmacaoContato(roomname, limit, username, convidadoPrivado){
 
-        const user = controllerBD.searchUsername(convidadoPrivado);
+        const user = await controllerBD.searchUsername(convidadoPrivado);
         
         if(user == undefined)
         {
-            return false;
+            return undefined;
         }
         else 
         {
             rooms.create({
-                roomname: roomname,
-                limit: limit,
-            });
-            usersInRooms.create({
-                roomname: roomname,
-                username: convidadoPrivado,
-                socketId: "socket.id"
-            }).then(() => {
-                console.log("ATRELACAO FEITA COM SUCESSO com usuario 2 ");
-            });
+                roomname,
+                limit,
+            }).then(async ()=>{
 
-            return true;
+                await this.auxUsersInRoom(roomname,username);
+                await this.auxUsersInRoom(roomname,convidadoPrivado); 
+                
+                return true;
+            }).catch(()=>{
+                return "201";
+            })
+
+           
 
 
         }
@@ -156,12 +119,22 @@ module.exports = {
 
 
 
+    },
+
+    async auxUsersInRoom(roomname, username){
+
+        usersInRooms.create({
+            roomname,
+            username,
+            socketId: "socket.id"
+        }).then(() => {
+            console.log(`
+            --------------------------------------
+            Mais um para o usersInRooms
+            room: ${roomname} user: ${username}
+            --------------------------------------`)
+        });
     }
-
-
-
-
-
 
 
 }

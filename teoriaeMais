@@ -11,12 +11,9 @@ auxiliares de acordo com o limit. MODELAR MELHOR A IDEIA AQUI: Podemos passar al
 para para identificar por onde to recebendo as informações, de qual formulário;
 
 //torcar de login para e mail 
-
 //Ideia: organizar o contariner que possui os chats que o usuário está, ao entrar na rota room
 
-+++++++
-//Questão para mudar, tirar a gambiarrar do number. Mudando as associações de sala no server.
-+++++++
+
 */
 
 

@@ -109,14 +109,12 @@
 
       const roomname = "<%=roomname%>";
       const username = "<%=username%>";
-      const number = "<%=number%>";
 
       console.log("username:" + username)
 
       socket.emit("selected_room", {
         roomname,
-        username,
-        number
+        username
 
       }, (responde) => {
         responde.forEach(element => {

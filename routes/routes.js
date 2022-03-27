@@ -34,7 +34,6 @@ router.post("/authenticate", async (req, res) => {
     } else { res.redirect("/") }
 
     //modificar esses elses para informar o problema em questão.
-
 })
 
 //Register
@@ -58,8 +57,6 @@ router.post("/register", async (req, res) => {
             email: email,
             password: hash,
 
-        }).then(() => {
-            console.log("Usuário cadastrado!");
         });
 
         res.render("accountCreated", {
@@ -81,14 +78,20 @@ router.post("/createRoom", middlewares, async (req, res) => {
     const roomname = req.body.roomname.trim();
     const limit = req.body.limit.trim();
 
-    const room = await controllerRooms.auxCreateRoom(roomname, limit);
+    const room = await controllerRooms.auxCreateRoom(roomname, limit, username);
 
     try {
 
-        if (room == false) {
+        if (room == false) 
+        {
             res.render("roomAlreadyCreated");
         }
-        else if (limit == "private") {
+        else if(room == "200")
+        {
+            console.log("!?!?!? ERRO 200 - CREATE ROOM !?!?!?");
+        }
+        else if (limit == "private") 
+        {
             req.session.room = {
                 username,
                 roomname,
@@ -99,11 +102,12 @@ router.post("/createRoom", middlewares, async (req, res) => {
 
         }
         else {
+
             req.session.room = {
                 roomname,
-                number: 2,
                 username
             };
+
             res.redirect("/createdroom");
 
         }
@@ -127,16 +131,19 @@ router.post("/confirmacaoContato", middlewares, async (req, res) => {
     const convidadoPrivado = req.body.username2.trim();
 
     try {
-        const user = await controllerRooms.auxConfirmacaoContato(roomname, limit, convidadoPrivado);
+        const user = await controllerRooms.auxConfirmacaoContato(roomname, limit, username ,convidadoPrivado);
 
-        if (user == false) {
+        if (user == undefined) {
             res.render("usuarionaoexiste")
         }
-        else {
-
+        else if(user == "201"){
+            console.log("!?!?!? ERRO 201 - CONFIMACAO CONTATO!?!?!?");
+        }
+        else 
+        {
+            
             req.session.room = {
                 roomname,
-                number: '4',
                 username,
             }
             res.redirect("/createdroom");
@@ -166,16 +173,14 @@ router.post("/selectedroom", middlewares, async (req, res) => {
             if (data == undefined) {
                 res.render("NotRoom");
             }
-            else if (data.number == 5) {
+            else if (data == false) {
                 res.render("thataprivateroom");
             }
             else {
                 req.session.room = {
                     roomname: data.roomname,
-                    username: data.username,
-                    number: data.number
+                    username: data.username
                 }
-
                 res.redirect("/main");
             }
         }
@@ -200,7 +205,6 @@ router.post("/selectedroom", middlewares, async (req, res) => {
 
 
 })
-
 
 //Login
 router.get("/", (req, res) => {
@@ -227,9 +231,9 @@ router.get("/createPrivate", (req, res) => {
 })
 
 router.get("/createdroom", (req, res) => {
+
     res.render("roomCreated");
 })
-
 
 router.get("/room", middlewares, async (req, res) => {
 
@@ -247,14 +251,12 @@ router.get("/room", middlewares, async (req, res) => {
 router.get("/main", middlewares, (req, res) => {
 
     const roomname = req.session.room.roomname;
-    const number = req.session.room.number;
     const username = req.session.room.username;
 
     res.render("main", {
         username,
-        roomname,
-        number
-    })
+        roomname, 
+    });
 
 })
 
