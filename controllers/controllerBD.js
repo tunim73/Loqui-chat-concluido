@@ -16,9 +16,9 @@ module.exports = {
     async seachRoomName(roomname) {
         return await rooms.findOne({ where: { roomname } });
     },
-    
-    async searchLimits(limit){
-        return await rooms.findAll({where: { limit }});
+
+    async searchLimits(limit) {
+        return await rooms.findAll({ where: { limit } });
     },
 
     //user in room
@@ -30,7 +30,7 @@ module.exports = {
         return await usersInRooms.findAll({ where: { username } });
     },
 
-    async searchMessages(roomname){
+    async searchMessages(roomname) {
         return await messages.findAll({ where: { roomname } });
     }
 

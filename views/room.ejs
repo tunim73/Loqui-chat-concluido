@@ -36,15 +36,13 @@
         <h1 class="title">Chats</h1>
         <div class="lista-de-conversas">
           <% room0.forEach(function(name){ %>
-            
+
             <form class="form-contact" action="/selectedroom" method="POST">
               <button type="submit" class="contact" value="<%=name.roomname%>" name="select_room">
-               <%=name.roomname%>
+                <%=name.roomname%>
               </button>
-              c
-              <input type="hidden" value="<%=username%>" name="username">
             </form>
-            
+
             <% }); %>
         </div>
       </div>
@@ -58,8 +56,6 @@
         <form class="create-room" action="/createRoom" method="POST">
           <p class="subtitle"> Crie uma nova sala </p>
           <input type="text" class="room-name" placeholder="Nome da sala" name="roomname" required>
-          <!--Username idiota aqui -->
-          <input type="hidden" value="<%=username%>" name="username">
           <select name="limit" required>
             <option value="-1">Selecione o tipo de sala</option>
             <option value="private">Privado</option>
@@ -70,10 +66,8 @@
           <hr>
         </form>
 
-        <form class = "create-room create" method="POST" action="/selectedroom" >
+        <form class="create-room create" method="POST" action="/selectedroom">
           <input type="text" class="room-name" placeholder="Nome do grupo" name="select_room" required>
-          <!--Username idiota aqui -->
-          <input type="hidden" value="<%=username%>" name="username">
           <button type="submit" class="create-room">Entre no grupo</button>
 
         </form>

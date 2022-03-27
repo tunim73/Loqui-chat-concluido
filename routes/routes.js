@@ -2,7 +2,7 @@ const express = require("express");
 const users = require("../database/users");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const middlewares = require("../middlewares/auth");
+const auth = require("../middlewares/auth");
 const controllerBD = require("../controllers/controllerBD");
 const controllerRooms = require("../controllers/controllerRooms");
 
@@ -72,7 +72,7 @@ router.post("/register", async (req, res) => {
 });
 
 
-router.post("/createRoom", middlewares, async (req, res) => {
+router.post("/createRoom", auth, async (req, res) => {
 
     const username = req.session.user.username;
     const roomname = req.body.roomname.trim();
@@ -82,16 +82,13 @@ router.post("/createRoom", middlewares, async (req, res) => {
 
     try {
 
-        if (room == false) 
-        {
+        if (room == false) {
             res.render("roomAlreadyCreated");
         }
-        else if(room == "200")
-        {
+        else if (room == "200") {
             console.log("!?!?!? ERRO 200 - CREATE ROOM !?!?!?");
         }
-        else if (limit == "private") 
-        {
+        else if (limit == "private") {
             req.session.room = {
                 username,
                 roomname,
@@ -122,7 +119,7 @@ router.post("/createRoom", middlewares, async (req, res) => {
 
 })
 
-router.post("/confirmacaoContato", middlewares, async (req, res) => {
+router.post("/confirmacaoContato", auth, async (req, res) => {
 
     const username = req.session.room.username;
     const roomname = req.session.room.roomname;
@@ -131,17 +128,16 @@ router.post("/confirmacaoContato", middlewares, async (req, res) => {
     const convidadoPrivado = req.body.username2.trim();
 
     try {
-        const user = await controllerRooms.auxConfirmacaoContato(roomname, limit, username ,convidadoPrivado);
+        const user = await controllerRooms.auxConfirmacaoContato(roomname, limit, username, convidadoPrivado);
 
         if (user == undefined) {
             res.render("usuarionaoexiste")
         }
-        else if(user == "201"){
+        else if (user == "201") {
             console.log("!?!?!? ERRO 201 - CONFIMACAO CONTATO!?!?!?");
         }
-        else 
-        {
-            
+        else {
+
             req.session.room = {
                 roomname,
                 username,
@@ -157,7 +153,7 @@ router.post("/confirmacaoContato", middlewares, async (req, res) => {
 
 })
 
-router.post("/selectedroom", middlewares, async (req, res) => {
+router.post("/selectedroom", auth, async (req, res) => {
 
     const roomname = req.body.select_room.trim();
     const username = req.session.user.username;
@@ -235,32 +231,31 @@ router.get("/createdroom", (req, res) => {
     res.render("roomCreated");
 })
 
-router.get("/room", middlewares, async (req, res) => {
+router.get("/room", auth, async (req, res) => {
 
     const username = req.session.user.username;
     const room0 = await controllerBD.searchAllusernameUsersInRoom(username);
 
     res.render("room", {
-
         username,
         room0,
     })
 
 })
 
-router.get("/main", middlewares, (req, res) => {
+router.get("/main", auth, (req, res) => {
 
     const roomname = req.session.room.roomname;
     const username = req.session.room.username;
 
     res.render("main", {
         username,
-        roomname, 
+        roomname,
     });
 
 })
 
-router.get("/global", middlewares, async (req, res) => {
+router.get("/global", auth, async (req, res) => {
 
     const username = req.session.user.username;
     const room0 = await controllerBD.searchLimits("global");

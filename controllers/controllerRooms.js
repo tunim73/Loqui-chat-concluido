@@ -6,105 +6,95 @@ const usersInRooms = require("../database/usersInRoom");
 
 module.exports = {
 
-    async auxSelectedRoom(roomname, username) 
-    {
+    async auxSelectedRoom(roomname, username) {
 
         const room = await controllerBD.seachRoomName(roomname);
 
         if (room == undefined) //room não localizada
         {
             return undefined;
-        } 
-        
-        else 
-        { // room localizada
+        }
+
+        else { // room localizada
 
             const inRoom = await controllerBD.searchUsersInRoom(roomname, username);
-            
-            if(inRoom != undefined) 
-            { //Usuário já esteve nessa room antes
+
+            if (inRoom != undefined) { //Usuário já esteve nessa room antes
                 data = ({
                     roomname: room.roomname,
                     username,
                 });
-                             
+
                 return data;
-                
+
             }
-            else if(room.limit == "private" && inRoom.length >=2) 
-            { //impede o usuário de entrar numa sala privada 
+            else if (room.limit == "private" && inRoom.length >= 2) { //impede o usuário de entrar numa sala privada 
                 return false;
             }
-            else 
-            {   //usuario nunca entrou nessa room, pode entrar, pois é do tipo grupo ou global
+            else {   //usuario nunca entrou nessa room, pode entrar, pois é do tipo grupo ou global
                 //atrele usuário a sala e retorne
-                await this.auxUsersInRoom(roomname,username); 
+                await this.auxUsersInRoom(roomname, username);
                 data = ({
                     roomname: room.roomname,
                     username,
                 });
-                
-                             
+
+
                 return data;
             }
-           
+
         }
-        
+
     },
 
-    async auxCreateRoom(roomname, limit, username){
+    async auxCreateRoom(roomname, limit, username) {
 
         const room = await controllerBD.seachRoomName(roomname);
 
-        if(room != undefined)
-        {
+        if (room != undefined) {
             return false
         }
-        else if(limit=="private")
-        {
+        else if (limit == "private") {
             return limit; //TALVEZ AQUI EU POSSA FAZER ALGUMA COISA LOGO, 
             //MELHOR DO QUE A FORMA ATUAL DE SOLICITAR O NOME DO INDIVIDUO por uma tela e tals
         }
-        else 
-        {
+        else {
             rooms.create({
                 roomname,
                 limit,
-            }).then(async ()=>{
+            }).then(async () => {
                 await this.auxUsersInRoom(roomname, username);
                 return true;
-            }).catch(()=>{
+            }).catch(() => {
                 return "200"
-            });   
+            });
 
 
         }
     },
 
-    async auxConfirmacaoContato(roomname, limit, username, convidadoPrivado){
+    async auxConfirmacaoContato(roomname, limit, username, convidadoPrivado) {
 
         const user = await controllerBD.searchUsername(convidadoPrivado);
-        
-        if(user == undefined)
-        {
+
+        if (user == undefined) {
             return undefined;
         }
-        else 
-        {
+        else {
             rooms.create({
                 roomname,
                 limit,
-            }).then(async ()=>{
+            }).then(async () => {
 
-                await this.auxUsersInRoom(roomname,username);
-                await this.auxUsersInRoom(roomname,convidadoPrivado); 
-                
+                await this.auxUsersInRoom(roomname, username);
+                await this.auxUsersInRoom(roomname, convidadoPrivado);
+
                 return true;
-            }).catch(()=>{
+            }).catch(() => {
                 return "201";
             })
 
-           
+
 
 
         }
@@ -115,13 +105,13 @@ module.exports = {
 
 
 
-       
+
 
 
 
     },
 
-    async auxUsersInRoom(roomname, username){
+    async auxUsersInRoom(roomname, username) {
 
         usersInRooms.create({
             roomname,

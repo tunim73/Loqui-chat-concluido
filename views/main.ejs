@@ -110,8 +110,6 @@
       const roomname = "<%=roomname%>";
       const username = "<%=username%>";
 
-      console.log("username:" + username)
-
       socket.emit("selected_room", {
         roomname,
         username
@@ -131,7 +129,11 @@
         }
         else {
 
-          socket.emit("message", { roomname, username, msg });
+          socket.emit("message", {
+            roomname,
+            username,
+            msg
+          });
           document.getElementById("msg").value = "";
         }
 
@@ -148,7 +150,7 @@
         p.style.marginBottom = "0.5rem";
 
         if (username == data.username) p.style.backgroundColor = "#F1F4F8";
-        else p.style.backgroundColor = "#9D9DB8"; 
+        else p.style.backgroundColor = "#9D9DB8";
 
         p.style.padding = "0.5rem";
         p.style.borderRadius = "0.3rem";

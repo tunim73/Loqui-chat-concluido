@@ -6,12 +6,20 @@
 */
 /* Ideias a implmentar
 
+//Organizar as conversas que aparece do usuario, aparecer das que tiveram
+modificações recentes 
+
+//Nas Rooms globais mostrar - ordem alfabética
+//Colocar quantidade de membros, a principio, dentro das rooms globais e expor na tela tbm
+
+
+
 //Ideia: Na Router selectedRoom, podemos separar as verificações em funções 
 auxiliares de acordo com o limit. MODELAR MELHOR A IDEIA AQUI: Podemos passar algum tipo de numero de verificação do front
 para para identificar por onde to recebendo as informações, de qual formulário;
 
-//torcar de login para e mail 
-//Ideia: organizar o contariner que possui os chats que o usuário está, ao entrar na rota room
+//ideia:trocar de login para e mail 
+//ideia:inserir uma lista de contatos de cada usuario
 
 
 */

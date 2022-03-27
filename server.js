@@ -2,7 +2,6 @@ const { http, io, app, express } = require("./https")
 const bodyParser = require("body-parser");
 const routes = require("./routes/routes");
 const session = require("express-session");
-const usersInRoom = require("./database/usersInRoom");
 const messages = require("./database/messages");
 const controllerBD = require("./controllers/controllerBD");
 
@@ -35,9 +34,8 @@ io.on("connection", (socket) => {
     socket.on("selected_room", async (data, callback) => {
 
         socket.join(data.roomname);
-        
-        try
-        {
+
+        try {
             const inRoom = await controllerBD.searchUsersInRoom(data.roomname, data.username);
 
             inRoom.socketId = socket.id;
@@ -50,8 +48,8 @@ io.on("connection", (socket) => {
             ERRO COM inRomm em Server
             -------------------------`);
         }
-        
-        
+
+
 
         const message = await controllerBD.searchMessages(data.roomname);
 
